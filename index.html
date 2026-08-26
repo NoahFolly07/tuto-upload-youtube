@@ -27,25 +27,28 @@
     --tip-bg: #ecfaf8;
     --tip-border: #b8e6e1;
     --done: #16a34a;
-    --sidebar-w: 320px;
+    --sidebar-w: 300px;
     --radius: 12px;
     --radius-sm: 8px;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+  }
 
   body {
     background: var(--bg);
     color: var(--text);
     font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    min-height: 100vh;
   }
 
   .mono { font-family: 'JetBrains Mono', monospace; }
 
   /* ── LAYOUT ── */
-  .app { display: flex; min-height: 100vh; }
+  .app { display: flex; height: 100vh; }
 
   /* ── SIDEBAR ── */
   .sidebar {
@@ -53,9 +56,7 @@
     flex-shrink: 0;
     background: var(--bg-sidebar);
     border-right: 1px solid var(--border);
-    padding: 28px 20px 32px;
-    position: sticky;
-    top: 0;
+    padding: 22px 18px 20px;
     height: 100vh;
     overflow-y: auto;
     display: flex;
@@ -66,28 +67,28 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 4px 6px 20px;
+    padding: 2px 6px 16px;
     border-bottom: 1px solid var(--border);
-    margin-bottom: 22px;
+    margin-bottom: 16px;
   }
 
   .brand-mark {
-    width: 34px; height: 34px;
+    width: 32px; height: 32px;
     border-radius: 9px;
     background: var(--accent);
     display: flex; align-items: center; justify-content: center;
-    color: #fff; font-size: 16px; flex-shrink: 0;
+    color: #fff; font-size: 15px; flex-shrink: 0;
   }
 
   .brand-text { line-height: 1.25; }
-  .brand-title { font-weight: 800; font-size: 14.5px; letter-spacing: -0.01em; }
-  .brand-sub { font-size: 11px; color: var(--text-3); font-family: 'JetBrains Mono', monospace; }
+  .brand-title { font-weight: 800; font-size: 14px; letter-spacing: -0.01em; }
+  .brand-sub { font-size: 10.5px; color: var(--text-3); font-family: 'JetBrains Mono', monospace; }
 
   /* progress gauge */
-  .gauge-block { padding: 0 6px 22px; border-bottom: 1px solid var(--border); margin-bottom: 18px; }
+  .gauge-block { padding: 0 6px 16px; border-bottom: 1px solid var(--border); margin-bottom: 14px; }
   .gauge-label {
     display: flex; justify-content: space-between; align-items: baseline;
-    font-size: 11px; color: var(--text-3); margin-bottom: 8px;
+    font-size: 10.5px; color: var(--text-3); margin-bottom: 7px;
     font-family: 'JetBrains Mono', monospace; letter-spacing: 0.02em;
   }
   .gauge-count { color: var(--accent); font-weight: 600; }
@@ -103,18 +104,18 @@
   }
 
   .steps-label {
-    font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--text-3); padding: 0 6px; margin-bottom: 10px;
+    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-3); padding: 0 6px; margin-bottom: 8px;
     font-family: 'JetBrains Mono', monospace;
   }
 
-  .steps { list-style: none; display: flex; flex-direction: column; gap: 3px; flex: 1; }
+  .steps { list-style: none; display: flex; flex-direction: column; gap: 3px; }
 
   .step-btn {
-    display: flex; align-items: center; gap: 12px;
+    display: flex; align-items: center; gap: 11px;
     width: 100%; text-align: left;
     background: none; border: none; cursor: pointer;
-    padding: 10px 10px;
+    padding: 9px 9px;
     border-radius: var(--radius-sm);
     font-family: inherit;
     color: var(--text-2);
@@ -129,10 +130,10 @@
   .step-btn.active .step-name { color: var(--text); font-weight: 700; }
 
   .step-num {
-    width: 24px; height: 24px; border-radius: 50%;
+    width: 23px; height: 23px; border-radius: 50%;
     border: 1.5px solid var(--border-strong);
     display: flex; align-items: center; justify-content: center;
-    font-size: 11px; font-weight: 700; flex-shrink: 0;
+    font-size: 10.5px; font-weight: 700; flex-shrink: 0;
     font-family: 'JetBrains Mono', monospace;
     background: #fff;
     transition: all 0.15s;
@@ -144,17 +145,17 @@
   .step-btn.done.active .step-num { background: var(--accent); border-color: var(--accent); }
 
   .step-info { flex: 1; min-width: 0; }
-  .step-name { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.3; }
+  .step-name { font-size: 12.5px; font-weight: 600; color: var(--text); line-height: 1.3; }
   .step-tag {
-    font-size: 9.5px; margin-top: 2px; font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; margin-top: 2px; font-family: 'JetBrains Mono', monospace;
     letter-spacing: 0.03em; text-transform: uppercase;
   }
   .step-tag.warn { color: var(--warn); }
   .step-tag.tip { color: var(--tip); }
 
   .sidebar-footer {
-    margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border);
-    font-size: 11px; color: var(--text-3); padding-left: 6px; padding-right: 6px; line-height: 1.5;
+    margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border);
+    font-size: 10.5px; color: var(--text-3); padding-left: 6px; padding-right: 6px; line-height: 1.5;
   }
 
   /* ── MOBILE TOGGLE ── */
@@ -175,102 +176,63 @@
   .main {
     flex: 1;
     min-width: 0;
-    padding: 56px 56px 100px;
-    max-width: 920px;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 30px 44px 40px;
   }
 
-  .intro {
-    margin-bottom: 48px;
-    padding-bottom: 40px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .eyebrow {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 16px;
-  }
-  .eyebrow::before { content: ''; width: 20px; height: 1.5px; background: var(--accent); }
-
-  .intro h1 {
-    font-size: 34px; font-weight: 800; letter-spacing: -0.025em;
-    line-height: 1.15; margin-bottom: 14px;
-  }
-
-  .intro p {
-    font-size: 15px; color: var(--text-2); line-height: 1.65; max-width: 640px;
-  }
-
-  .intro-note {
-    display: flex; gap: 10px; align-items: flex-start;
-    margin-top: 22px; padding: 13px 16px;
-    background: #f4f4f2; border-radius: var(--radius-sm);
-    font-size: 12.5px; color: var(--text-2); line-height: 1.55; max-width: 640px;
-  }
-
-  .cta-row { display: flex; gap: 10px; margin-top: 24px; flex-wrap: wrap; }
-  .btn {
-    font-family: inherit; font-size: 13.5px; font-weight: 700;
-    padding: 11px 20px; border-radius: 100px; cursor: pointer;
-    border: none; transition: all 0.15s;
-  }
-  .btn-primary { background: var(--text); color: #fff; }
-  .btn-primary:hover { background: var(--accent); }
-  .btn-ghost { background: none; border: 1.5px solid var(--border-strong); color: var(--text-2); }
-  .btn-ghost:hover { border-color: var(--text-2); color: var(--text); }
+  .main-inner { max-width: 760px; }
 
   /* ── STEP PANEL ── */
-  .panel { display: none; animation: fadeIn 0.35s ease both; }
+  .panel { display: none; animation: fadeIn 0.3s ease both; }
   .panel.active { display: block; }
 
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
+    from { opacity: 0; transform: translateY(8px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
-  .panel-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 22px; }
+  .panel-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px; }
 
   .panel-num {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 13px; font-weight: 700; color: var(--accent);
+    font-size: 12px; font-weight: 700; color: var(--accent);
     background: var(--accent-dim); border: 1px solid var(--accent-line);
-    width: 40px; height: 40px; border-radius: 10px;
+    width: 36px; height: 36px; border-radius: 10px;
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
   }
 
-  .panel-title-block { flex: 1; padding-top: 2px; }
-  .panel-title { font-size: 24px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.2; }
-  .panel-sub { font-size: 13.5px; color: var(--text-3); margin-top: 4px; }
+  .panel-title-block { flex: 1; padding-top: 1px; }
+  .panel-title { font-size: 21px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.2; }
+  .panel-sub { font-size: 13px; color: var(--text-3); margin-top: 3px; }
 
   .panel-badge {
     display: inline-flex; align-items: center; gap: 6px;
-    font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
     letter-spacing: 0.04em; text-transform: uppercase;
-    padding: 4px 10px; border-radius: 100px; flex-shrink: 0; margin-top: 4px;
+    padding: 4px 10px; border-radius: 100px; flex-shrink: 0; margin-top: 3px;
   }
   .badge-warn { background: var(--warn-bg); border: 1px solid var(--warn-border); color: var(--warn); }
   .badge-tip { background: var(--tip-bg); border: 1px solid var(--tip-border); color: var(--tip); }
-  .badge-std { background: #f0f0ee; border: 1px solid var(--border-strong); color: var(--text-2); }
 
-  .panel-body { font-size: 14.5px; color: var(--text-2); line-height: 1.75; }
-  .panel-body p { margin-bottom: 14px; }
+  .panel-body { font-size: 14px; color: var(--text-2); line-height: 1.6; }
+  .panel-body p { margin-bottom: 10px; }
   .panel-body strong { color: var(--text); font-weight: 700; }
 
   .callout {
-    display: flex; gap: 12px; align-items: flex-start;
-    padding: 16px 18px; border-radius: var(--radius-sm);
-    margin: 20px 0; font-size: 13.5px; line-height: 1.65;
+    display: flex; gap: 10px; align-items: flex-start;
+    padding: 13px 15px; border-radius: var(--radius-sm);
+    margin: 14px 0; font-size: 13px; line-height: 1.55;
   }
-  .callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .callout-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
   .callout.warn { background: var(--warn-bg); border: 1px solid var(--warn-border); color: #7c3d0a; }
   .callout.tip { background: var(--tip-bg); border: 1px solid var(--tip-border); color: #0a544d; }
   .callout strong { color: inherit; }
 
   /* screenshot placeholder */
   .shot {
-    margin: 24px 0;
+    margin: 16px 0;
     border: 1px solid var(--border);
     border-radius: var(--radius);
     overflow: hidden;
@@ -278,36 +240,32 @@
   }
   .shot-frame {
     background: #f0f0ee;
-    aspect-ratio: 16/8;
+    height: 130px;
     display: flex; align-items: center; justify-content: center;
     position: relative;
-    padding: 24px;
+    padding: 14px;
   }
   .shot-mock {
     width: 100%; height: 100%;
     border: 1.5px dashed var(--border-strong);
     border-radius: 8px;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 8px; color: var(--text-3);
+    gap: 6px; color: var(--text-3);
     background: repeating-linear-gradient(135deg, #fafaf9, #fafaf9 10px, #f4f4f2 10px, #f4f4f2 20px);
   }
-  .shot-mock-icon { font-size: 26px; opacity: 0.5; }
-  .shot-mock-text { font-size: 12px; font-family: 'JetBrains Mono', monospace; text-align: center; padding: 0 20px; }
-  .shot-caption {
-    padding: 10px 16px; font-size: 12px; color: var(--text-3);
-    border-top: 1px solid var(--border); font-family: 'JetBrains Mono', monospace;
-  }
+  .shot-mock-icon { font-size: 20px; opacity: 0.5; }
+  .shot-mock-text { font-size: 11px; font-family: 'JetBrains Mono', monospace; text-align: center; padding: 0 16px; }
 
   .panel-nav {
     display: flex; justify-content: space-between; align-items: center;
-    margin-top: 44px; padding-top: 24px; border-top: 1px solid var(--border);
+    margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border);
     gap: 12px;
   }
   .nav-btn {
     display: flex; align-items: center; gap: 8px;
-    font-family: inherit; font-size: 13px; font-weight: 700;
+    font-family: inherit; font-size: 12.5px; font-weight: 700;
     background: none; border: 1.5px solid var(--border-strong);
-    padding: 10px 16px; border-radius: 100px; cursor: pointer;
+    padding: 8px 15px; border-radius: 100px; cursor: pointer;
     color: var(--text); transition: all 0.15s;
   }
   .nav-btn:hover { border-color: var(--accent); color: var(--accent); }
@@ -317,16 +275,23 @@
   .nav-btn.next:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
 
   /* end panel */
-  .end-block {
-    text-align: center; padding: 60px 20px;
+  .end-block { text-align: center; padding: 40px 20px; }
+  .end-icon { font-size: 34px; margin-bottom: 12px; }
+  .end-block h2 { font-size: 19px; font-weight: 800; margin-bottom: 8px; }
+  .end-block p { color: var(--text-2); font-size: 13.5px; max-width: 420px; margin: 0 auto; line-height: 1.55; }
+  .btn-ghost {
+    font-family: inherit; font-size: 13px; font-weight: 700;
+    padding: 9px 18px; border-radius: 100px; cursor: pointer;
+    background: none; border: 1.5px solid var(--border-strong); color: var(--text-2);
+    transition: all 0.15s; margin-top: 18px;
   }
-  .end-icon { font-size: 40px; margin-bottom: 16px; }
-  .end-block h2 { font-size: 22px; font-weight: 800; margin-bottom: 10px; }
-  .end-block p { color: var(--text-2); font-size: 14px; max-width: 440px; margin: 0 auto; line-height: 1.6; }
+  .btn-ghost:hover { border-color: var(--text-2); color: var(--text); }
 
   /* ── MOBILE ── */
   @media (max-width: 880px) {
+    html, body { overflow: auto; height: auto; }
     .mobile-toggle { display: flex; }
+    .app { height: auto; min-height: 100vh; }
     .sidebar {
       position: fixed; top: 0; left: 0; z-index: 150;
       transform: translateX(-100%);
@@ -337,8 +302,7 @@
     .sidebar-overlay.open {
       display: block; position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 140;
     }
-    .main { padding: 90px 20px 60px; max-width: 100%; }
-    .intro h1 { font-size: 26px; }
+    .main { height: auto; overflow: visible; padding: 74px 18px 50px; }
     .panel-header { flex-wrap: wrap; }
   }
 </style>
@@ -362,7 +326,7 @@
     <div class="gauge-block">
       <div class="gauge-label">
         <span>Progression</span>
-        <span><span class="gauge-count" id="gaugeCount">0</span>/8</span>
+        <span><span class="gauge-count" id="gaugeCount">0</span>/5</span>
       </div>
       <div class="gauge-track"><div class="gauge-fill" id="gaugeFill"></div></div>
     </div>
@@ -377,17 +341,7 @@
 
   <!-- MAIN -->
   <main class="main">
-    <div class="intro">
-      <div class="eyebrow">Guide interne</div>
-      <h1>Publier une vidéo sur YouTube,<br>sans les pièges.</h1>
-      <p>Ce guide remplace le tutoriel Word. Il ne réexplique pas ce que vous savez déjà faire — il pointe les 8 réglages qui ont un vrai impact ou qu'on rate facilement. Cliquez une étape dans le menu, ou avancez avec les boutons en bas de page.</p>
-      <div class="intro-note">💡 <span><strong>Astuce :</strong> utilisez les flèches ← → du clavier pour naviguer entre les étapes une fois une étape ouverte.</span></div>
-      <div class="cta-row">
-        <button class="btn btn-primary" onclick="goToStep(0)">Commencer →</button>
-      </div>
-    </div>
-
-    <div id="panels"></div>
+    <div class="main-inner" id="panels"></div>
   </main>
 </div>
 
@@ -396,36 +350,16 @@ const STEPS = [
   {
     tag: null,
     badge: null,
-    title: "Titre &amp; description",
-    sub: "Le minimum non négociable",
+    title: "Détails de la vidéo",
+    sub: "Titre, description, miniature, playlist",
     body: `
-      <p>Le <strong>titre</strong> est obligatoire — impossible de publier sans. Rien de piégeux ici, mais un point à ne pas zapper : la <strong>description</strong>.</p>
-      <p>Ajoutez un lien seulement s'il est <strong>utile et pertinent</strong> pour cette vidéo précise (site, autre vidéo, ressource citée). Pas de lien générique ajouté par réflexe — ça dilue la description et n'apporte rien au spectateur.</p>
+      <p><strong>Titre</strong> — obligatoire, impossible de publier sans.</p>
+      <p><strong>Description</strong> — ajoutez un lien seulement s'il est <strong>utile et pertinent</strong> pour cette vidéo précise. Pas de lien générique ajouté par réflexe, ça dilue la description.</p>
+      <p><strong>Miniature</strong> — toujours une <strong>miniature personnalisée</strong> plutôt que l'image extraite par défaut. C'est le plus gros levier du taux de clic.</p>
+      <p><strong>Playlist</strong> — si la vidéo correspond à une catégorie existante, classez-la. Meilleure découvrabilité, mieux poussée par l'algorithme au sein d'une thématique.</p>
     `,
     callout: null,
-    shot: { icon: "📝", text: "titre + description — YouTube Studio, écran \"Détails\"" }
-  },
-  {
-    tag: "À personnaliser",
-    badge: null,
-    title: "Miniature personnalisée",
-    sub: "Le vrai levier du taux de clic",
-    body: `
-      <p>Importez toujours une <strong>miniature personnalisée</strong> plutôt que de laisser YouTube choisir une image extraite de la vidéo. C'est l'élément qui a le plus d'impact sur le taux de clic — ne pas la traiter comme un détail.</p>
-    `,
-    callout: null,
-    shot: { icon: "🖼", text: "zone d'upload de la miniature (3 choix auto + upload perso)" }
-  },
-  {
-    tag: null,
-    badge: null,
-    title: "Playlist",
-    sub: "Classer pour être trouvé",
-    body: `
-      <p>Si la vidéo correspond à une catégorie existante, ajoutez-la à la <strong>bonne playlist</strong>. Une vidéo mal classée (ou pas classée du tout) est plus difficile à retrouver pour un spectateur qui parcourt la chaîne — et moins bien poussée par YouTube au sein d'une thématique.</p>
-    `,
-    callout: null,
-    shot: { icon: "📁", text: "sélecteur de playlist — écran \"Détails\"" }
+    shot: { icon: "📝", text: "écran \"Détails\" — titre, description, miniature, playlist" }
   },
   {
     tag: "⚠ Piège",
@@ -438,48 +372,35 @@ const STEPS = [
     callout: {
       type: "warn",
       icon: "⚠️",
-      html: `<strong>Pourquoi c'est important&nbsp;:</strong> cocher la mauvaise case ne fait pas que changer un paramètre cosmétique. Ça déclare officiellement la vidéo comme contenu enfant auprès de YouTube — ce qui désactive les commentaires, les publicités personnalisées, certaines fonctionnalités, et cible la vidéo vers un public non voulu. Se tromper ici peut aussi être interprété par YouTube comme une fausse déclaration.`
+      html: `<strong>Pourquoi c'est important&nbsp;:</strong> cocher la mauvaise case déclare officiellement la vidéo comme contenu enfant auprès de YouTube — ça désactive les commentaires, les publicités personnalisées, certaines fonctionnalités, et cible la vidéo vers un public non voulu. Ça peut aussi être vu par YouTube comme une fausse déclaration.`
     },
     shot: { icon: "🚸", text: "réglage \"Audience\" — écran \"Détails\"" }
   },
   {
-    tag: null,
-    badge: null,
-    title: "Langue de la vidéo",
-    sub: "Sous-titres auto & référencement",
-    body: `
-      <p>Dans <strong>Plus d'options</strong>, sélectionnez la <strong>langue de la vidéo</strong> en fonction de son contenu réel. C'est souvent zappé, mais ce réglage conditionne la qualité des sous-titres automatiques générés par YouTube et aide l'algorithme à recommander la vidéo au bon public.</p>
-    `,
-    callout: null,
-    shot: { icon: "🌐", text: "sélecteur de langue — \"Plus d'options\"" }
-  },
-  {
     tag: "⚠ Piège",
     badge: "warn",
-    title: "Flux abonnés & notification",
-    sub: "« Publier dans le flux abonnements et informer les abonnés »",
+    title: "Langue & notifications",
+    sub: "« Plus d'options » — les deux réglages qu'on zappe",
     body: `
-      <p>Toujours dans <strong>Plus d'options</strong>, une case contrôle si la vidéo apparaît immédiatement dans le flux des abonnés et déclenche une notification.</p>
+      <p><strong>Langue de la vidéo</strong> — dans « Plus d'options », sélectionnez la langue réelle du contenu. Ça conditionne la qualité des sous-titres automatiques et aide l'algorithme à recommander la vidéo au bon public.</p>
+      <p><strong>Notifier les abonnés</strong> — une case contrôle si la vidéo apparaît immédiatement dans le flux des abonnés et déclenche une notification.</p>
     `,
     callout: {
       type: "warn",
       icon: "⚠️",
-      html: `<strong>Réflexe équipe&nbsp;:</strong> s'assurer que cette case est bien <strong>décochée</strong> avant de publier. Elle est cochée par défaut — l'oublier veut dire notifier tous les abonnés et remonter la vidéo dans leur flux, même quand ce n'est pas voulu (republication, correction, contenu secondaire). Si vous publiez un contenu majeur qui doit être annoncé à tous, c'est le seul cas où on la laisse cochée volontairement.`
+      html: `<strong>Réflexe équipe&nbsp;:</strong> s'assurer que la case « Publier dans le flux abonnements et informer les abonnés » est bien <strong>décochée</strong> avant de publier. Elle est cochée par défaut — l'oublier veut dire notifier tous les abonnés même quand ce n'est pas voulu (republication, correction, contenu secondaire). On la laisse cochée uniquement pour un contenu majeur à annoncer à tous.`
     },
-    shot: { icon: "🔔", text: "case \"Publish to subscriptions feed and notify subscribers\"" }
+    shot: { icon: "🌐", text: "\"Plus d'options\" — langue + case notification abonnés" }
   },
   {
     tag: "À choisir",
     badge: null,
-    title: "Visibilité",
+    title: "Visibilité & publication",
     sub: "Privé · Non répertorié · Public",
     body: `
-      <p>Choisissez la visibilité en connaissance de cause :</p>
-      <ul style="margin:0 0 14px 20px; display:flex; flex-direction:column; gap:8px;">
-        <li><strong>Privé</strong> — visible uniquement par les comptes explicitement autorisés. Pour relecture interne avant diffusion.</li>
-        <li><strong>Non répertorié</strong> — visible par toute personne ayant le lien direct, mais invisible dans les recherches et sur la chaîne. Utile pour partager sans publier officiellement.</li>
-        <li><strong>Public</strong> — visible par tous, référencé normalement. La publication finale.</li>
-      </ul>
+      <p><strong>Privé</strong> — visible uniquement par les comptes explicitement autorisés. Pour relecture interne avant diffusion.</p>
+      <p><strong>Non répertorié</strong> — visible par toute personne ayant le lien direct, invisible dans les recherches et sur la chaîne. Utile pour partager sans publier officiellement.</p>
+      <p><strong>Public</strong> — visible par tous, référencé normalement. La publication finale.</p>
       <p>Une fois le choix fait, sauvegardez / publiez.</p>
     `,
     callout: null,
@@ -491,12 +412,7 @@ const STEPS = [
     title: "Corriger la miniature après coup",
     sub: "On peut revenir en arrière",
     body: `
-      <p>Une vidéo déjà publiée n'est pas figée. Pour changer la miniature après coup&nbsp;:</p>
-      <ol style="margin:0 0 4px 20px; display:flex; flex-direction:column; gap:6px;">
-        <li>Ouvrir la vidéo, aller dans <strong>« Détails »</strong></li>
-        <li>Cliquer sur les <strong>trois petits points</strong> (⋮) → <strong>« Options »</strong></li>
-        <li>Sélectionner <strong>« Modifier »</strong> pour réimporter une nouvelle miniature</li>
-      </ol>
+      <p>Une vidéo déjà publiée n'est pas figée. Pour changer la miniature après coup&nbsp;: ouvrir la vidéo → <strong>« Détails »</strong> → trois petits points (⋮) → <strong>« Options »</strong> → <strong>« Modifier »</strong> pour réimporter une nouvelle miniature.</p>
     `,
     callout: {
       type: "tip",
@@ -566,10 +482,8 @@ end.innerHTML = `
   <div class="end-block">
     <div class="end-icon">✅</div>
     <h2>C'est tout.</h2>
-    <p>8 points, pas 16 pages. Si un détail vous manque encore, demandez directement à l'équipe — ce guide reste volontairement court.</p>
-    <div class="cta-row" style="justify-content:center; margin-top:22px;">
-      <button class="btn btn-ghost" onclick="goToStep(0)">↺ Revoir depuis le début</button>
-    </div>
+    <p>${STEPS.length} points, pas 16 pages. Si un détail vous manque encore, demandez directement à l'équipe — ce guide reste volontairement court.</p>
+    <button class="btn-ghost" onclick="goToStep(0)">↺ Revoir depuis le début</button>
   </div>
 `;
 panelsEl.appendChild(end);
@@ -598,7 +512,7 @@ function goToStep(i) {
   }
 
   updateGauge();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  document.querySelector('.main').scrollTo({ top: 0, behavior: 'smooth' });
   if (window.innerWidth <= 880) closeSidebar();
 }
 
@@ -622,6 +536,8 @@ function closeSidebar() {
   document.getElementById('sidebar').classList.remove('open');
   document.getElementById('overlay').classList.remove('open');
 }
+
+goToStep(0);
 </script>
 </body>
 </html>
