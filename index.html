@@ -245,6 +245,10 @@
     position: relative;
     padding: 14px;
   }
+  .shot-frame.has-img { height: auto; padding: 0; background: #fff; }
+  .shot-frame.has-img img {
+    display: block; width: 100%; height: auto; max-height: 420px; object-fit: contain;
+  }
   .shot-mock {
     width: 100%; height: 100%;
     border: 1.5px dashed var(--border-strong);
@@ -359,7 +363,7 @@ const STEPS = [
       <p><strong>Playlist</strong> — si la vidéo correspond à une catégorie existante, classez-la. Meilleure découvrabilité, mieux poussée par l'algorithme au sein d'une thématique.</p>
     `,
     callout: null,
-    shot: { icon: "📝", text: "écran \"Détails\" — titre, description, miniature, playlist" }
+    shot: { img: "screenshots/01-details.png", icon: "📝", text: "écran \"Détails\" — titre, description, miniature, playlist" }
   },
   {
     tag: "⚠ Piège",
@@ -374,7 +378,7 @@ const STEPS = [
       icon: "⚠️",
       html: `<strong>Pourquoi c'est important&nbsp;:</strong> cocher la mauvaise case déclare officiellement la vidéo comme contenu enfant auprès de YouTube — ça désactive les commentaires, les publicités personnalisées, certaines fonctionnalités, et cible la vidéo vers un public non voulu. Ça peut aussi être vu par YouTube comme une fausse déclaration.`
     },
-    shot: { icon: "🚸", text: "réglage \"Audience\" — écran \"Détails\"" }
+    shot: { img: "screenshots/02-not-for-kids.png", icon: "🚸", text: "réglage \"Audience\" — écran \"Détails\"" }
   },
   {
     tag: "⚠ Piège",
@@ -390,7 +394,7 @@ const STEPS = [
       icon: "⚠️",
       html: `<strong>Réflexe équipe&nbsp;:</strong> s'assurer que la case « Publier dans le flux abonnements et informer les abonnés » est bien <strong>décochée</strong> avant de publier. Elle est cochée par défaut — l'oublier veut dire notifier tous les abonnés même quand ce n'est pas voulu (republication, correction, contenu secondaire). On la laisse cochée uniquement pour un contenu majeur à annoncer à tous.`
     },
-    shot: { icon: "🌐", text: "\"Plus d'options\" — langue + case notification abonnés" }
+    shot: { img: "screenshots/03-langue-notif.png", icon: "🌐", text: "\"Plus d'options\" — langue + case notification abonnés" }
   },
   {
     tag: "À choisir",
@@ -404,7 +408,7 @@ const STEPS = [
       <p>Une fois le choix fait, sauvegardez / publiez.</p>
     `,
     callout: null,
-    shot: { icon: "👁", text: "sélecteur de visibilité — étape finale de publication" }
+    shot: { img: "screenshots/04-visibilite.png", icon: "👁", text: "sélecteur de visibilité — étape finale de publication" }
   },
   {
     tag: "💡 Bon à savoir",
@@ -458,11 +462,14 @@ STEPS.forEach((s, i) => {
     <div class="panel-body">${s.body}</div>
     ${s.callout ? `<div class="callout ${s.callout.type}"><span class="callout-icon">${s.callout.icon}</span><span>${s.callout.html}</span></div>` : ''}
     <div class="shot">
-      <div class="shot-frame">
-        <div class="shot-mock">
-          <div class="shot-mock-icon">${s.shot.icon}</div>
-          <div class="shot-mock-text">Capture d'écran à insérer ici<br>${s.shot.text}</div>
-        </div>
+      <div class="shot-frame ${s.shot.img ? 'has-img' : ''}">
+        ${s.shot.img
+          ? `<img src="${s.shot.img}" alt="${s.shot.text}" loading="lazy" onerror="this.closest('.shot-frame').classList.remove('has-img'); this.replaceWith(Object.assign(document.createElement('div'),{className:'shot-mock',innerHTML:'<div class=\\'shot-mock-icon\\'>${s.shot.icon}</div><div class=\\'shot-mock-text\\'>Capture manquante&nbsp;: ${s.shot.img}</div>'}));">`
+          : `<div class="shot-mock">
+              <div class="shot-mock-icon">${s.shot.icon}</div>
+              <div class="shot-mock-text">Capture d'écran à insérer ici<br>${s.shot.text}</div>
+            </div>`
+        }
       </div>
     </div>
     <div class="panel-nav">
