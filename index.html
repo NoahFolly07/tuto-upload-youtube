@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.css">
 <style>
   :root {
     --bg: #f7f7f5;
@@ -246,9 +247,22 @@
     padding: 14px;
   }
   .shot-frame.has-img { height: auto; padding: 0; background: #fff; }
-  .shot-frame.has-img img {
+  .shot-link {
+    display: block; position: relative; line-height: 0; cursor: zoom-in;
+  }
+  .shot-link img {
     display: block; width: 100%; height: auto; max-height: 420px; object-fit: contain;
   }
+  .shot-zoom-hint {
+    position: absolute; top: 10px; right: 10px;
+    background: rgba(24,24,27,0.72); color: #fff;
+    font-size: 11px; font-weight: 600;
+    padding: 5px 10px; border-radius: 100px;
+    display: flex; align-items: center; gap: 5px;
+    pointer-events: none;
+    opacity: 0; transition: opacity 0.15s;
+  }
+  .shot-link:hover .shot-zoom-hint { opacity: 1; }
   .shot-mock {
     width: 100%; height: 100%;
     border: 1.5px dashed var(--border-strong);
@@ -330,7 +344,7 @@
     <div class="gauge-block">
       <div class="gauge-label">
         <span>Progression</span>
-        <span><span class="gauge-count" id="gaugeCount">0</span>/5</span>
+        <span><span class="gauge-count" id="gaugeCount">0</span>/<span id="gaugeTotal">0</span></span>
       </div>
       <div class="gauge-track"><div class="gauge-fill" id="gaugeFill"></div></div>
     </div>
@@ -350,7 +364,27 @@
 </div>
 
 <script>
+function esc(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 const STEPS = [
+  {
+    tag: null,
+    badge: null,
+    title: "Importer la vidéo",
+    sub: "Le point de départ",
+    body: `
+      <p>Dans YouTube Studio, cliquez sur <strong>Create</strong> (icône caméra avec un « + », en haut à droite) puis sur <strong>Upload videos</strong>. Sélectionnez ou glissez le fichier vidéo à publier.</p>
+    `,
+    callout: null,
+    shot: { icon: "⬆️", text: "bouton \"Create\" → \"Upload videos\"" }
+  },
   {
     tag: null,
     badge: null,
@@ -358,12 +392,12 @@ const STEPS = [
     sub: "Titre, description, miniature, playlist",
     body: `
       <p><strong>Titre</strong> — obligatoire, impossible de publier sans.</p>
-      <p><strong>Description</strong> — ajoutez un lien seulement s'il est <strong>utile et pertinent</strong> pour cette vidéo précise. Pas de lien générique ajouté par réflexe, ça dilue la description.</p>
-      <p><strong>Miniature</strong> — toujours une <strong>miniature personnalisée</strong> plutôt que l'image extraite par défaut. C'est le plus gros levier du taux de clic.</p>
+      <p><strong>Description</strong> — toujours en mettre une. Ajoutez aussi un lien si utile et pertinent pour cette vidéo précise — pas de lien générique ajouté par réflexe, ça dilue la description.</p>
+      <p><strong>Miniature</strong> — toujours une <strong>miniature personnalisée</strong> plutôt que l'image extraite par défaut. Groupe E dispose de ses propres templates de miniature YouTube — pour la création, contactez <strong>Noah Folly</strong> ou <strong>Noé Clément</strong> (Marketing).</p>
       <p><strong>Playlist</strong> — si la vidéo correspond à une catégorie existante, classez-la. Meilleure découvrabilité, mieux poussée par l'algorithme au sein d'une thématique.</p>
     `,
     callout: null,
-    shot: { img: "screenshots/01-details.png", icon: "📝", text: "écran \"Détails\" — titre, description, miniature, playlist" }
+    shot: { img: "screenshots/01-details.png", w: 1082, h: 1124, icon: "📝", text: "écran \"Détails\" — titre, description, miniature, playlist" }
   },
   {
     tag: "⚠ Piège",
@@ -378,7 +412,7 @@ const STEPS = [
       icon: "⚠️",
       html: `<strong>Pourquoi c'est important&nbsp;:</strong> cocher la mauvaise case déclare officiellement la vidéo comme contenu enfant auprès de YouTube — ça désactive les commentaires, les publicités personnalisées, certaines fonctionnalités, et cible la vidéo vers un public non voulu. Ça peut aussi être vu par YouTube comme une fausse déclaration.`
     },
-    shot: { img: "screenshots/02-not-for-kids.png", icon: "🚸", text: "réglage \"Audience\" — écran \"Détails\"" }
+    shot: { img: "screenshots/02-not-for-kids.png", w: 1081, h: 1129, icon: "🚸", text: "réglage \"Audience\" — écran \"Détails\"" }
   },
   {
     tag: "⚠ Piège",
@@ -394,7 +428,7 @@ const STEPS = [
       icon: "⚠️",
       html: `<strong>Réflexe équipe&nbsp;:</strong> s'assurer que la case « Publier dans le flux abonnements et informer les abonnés » est bien <strong>décochée</strong> avant de publier. Elle est cochée par défaut — l'oublier veut dire notifier tous les abonnés même quand ce n'est pas voulu (republication, correction, contenu secondaire). On la laisse cochée uniquement pour un contenu majeur à annoncer à tous.`
     },
-    shot: { img: "screenshots/03-langue-notif.png", icon: "🌐", text: "\"Plus d'options\" — langue + case notification abonnés" }
+    shot: { img: "screenshots/03-langue-notif.png", w: 1080, h: 1125, icon: "🌐", text: "\"Plus d'options\" — langue + case notification abonnés" }
   },
   {
     tag: "À choisir",
@@ -408,7 +442,7 @@ const STEPS = [
       <p>Une fois le choix fait, sauvegardez / publiez.</p>
     `,
     callout: null,
-    shot: { img: "screenshots/04-visibilite.png", icon: "👁", text: "sélecteur de visibilité — étape finale de publication" }
+    shot: { img: "screenshots/04-visibilite.png", w: 1078, h: 1124, icon: "👁", text: "sélecteur de visibilité — étape finale de publication" }
   },
   {
     tag: "💡 Bon à savoir",
@@ -431,6 +465,8 @@ const stepsList = document.getElementById('stepsList');
 const panelsEl = document.getElementById('panels');
 const gaugeFill = document.getElementById('gaugeFill');
 const gaugeCount = document.getElementById('gaugeCount');
+const gaugeTotal = document.getElementById('gaugeTotal');
+gaugeTotal.textContent = STEPS.length;
 
 const seen = new Set(JSON.parse(localStorage.getItem('yt-guide-seen') || '[]'));
 let current = -1;
@@ -441,8 +477,8 @@ STEPS.forEach((s, i) => {
     <button class="step-btn" id="stepbtn-${i}" onclick="goToStep(${i})">
       <span class="step-num">${i+1}</span>
       <span class="step-info">
-        <span class="step-name">${s.title}</span>
-        ${s.tag ? `<span class="step-tag ${s.badge || ''}">${s.tag}</span>` : ''}
+        <span class="step-name">${esc(s.title)}</span>
+        ${s.tag ? `<span class="step-tag ${s.badge || ''}">${esc(s.tag)}</span>` : ''}
       </span>
     </button>`;
   stepsList.appendChild(li);
@@ -450,12 +486,30 @@ STEPS.forEach((s, i) => {
   const panel = document.createElement('section');
   panel.className = 'panel';
   panel.id = `panel-${i}`;
+
+  let shotHtml;
+  if (s.shot.img) {
+    shotHtml = `
+      <a class="shot-link pswp-shot" href="${esc(s.shot.img)}" target="_blank" rel="noopener"
+         data-pswp-width="${s.shot.w}" data-pswp-height="${s.shot.h}">
+        <img src="${esc(s.shot.img)}" alt="${esc(s.shot.text)}" loading="lazy"
+             onerror="handleShotError(this, '${esc(s.shot.icon)}', '${esc(s.shot.img)}')">
+        <span class="shot-zoom-hint">🔍 Agrandir</span>
+      </a>`;
+  } else {
+    shotHtml = `
+      <div class="shot-mock">
+        <div class="shot-mock-icon">${s.shot.icon}</div>
+        <div class="shot-mock-text">Capture d'écran à insérer ici<br>${esc(s.shot.text)}</div>
+      </div>`;
+  }
+
   panel.innerHTML = `
     <div class="panel-header">
       <div class="panel-num">${String(i+1).padStart(2,'0')}</div>
       <div class="panel-title-block">
-        <div class="panel-title">${s.title}</div>
-        <div class="panel-sub">${s.sub}</div>
+        <div class="panel-title">${esc(s.title)}</div>
+        <div class="panel-sub">${esc(s.sub)}</div>
       </div>
       ${s.badge ? `<div class="panel-badge badge-${s.badge}">${s.badge === 'warn' ? '⚠ Attention' : '💡 Astuce'}</div>` : ''}
     </div>
@@ -463,13 +517,7 @@ STEPS.forEach((s, i) => {
     ${s.callout ? `<div class="callout ${s.callout.type}"><span class="callout-icon">${s.callout.icon}</span><span>${s.callout.html}</span></div>` : ''}
     <div class="shot">
       <div class="shot-frame ${s.shot.img ? 'has-img' : ''}">
-        ${s.shot.img
-          ? `<img src="${s.shot.img}" alt="${s.shot.text}" loading="lazy" onerror="this.closest('.shot-frame').classList.remove('has-img'); this.replaceWith(Object.assign(document.createElement('div'),{className:'shot-mock',innerHTML:'<div class=\\'shot-mock-icon\\'>${s.shot.icon}</div><div class=\\'shot-mock-text\\'>Capture manquante&nbsp;: ${s.shot.img}</div>'}));">`
-          : `<div class="shot-mock">
-              <div class="shot-mock-icon">${s.shot.icon}</div>
-              <div class="shot-mock-text">Capture d'écran à insérer ici<br>${s.shot.text}</div>
-            </div>`
-        }
+        ${shotHtml}
       </div>
     </div>
     <div class="panel-nav">
@@ -494,6 +542,17 @@ end.innerHTML = `
   </div>
 `;
 panelsEl.appendChild(end);
+
+// fallback if a screenshot file is missing/404
+function handleShotError(imgEl, icon, path) {
+  const link = imgEl.closest('a.pswp-shot');
+  const frame = imgEl.closest('.shot-frame');
+  if (frame) frame.classList.remove('has-img');
+  const mock = document.createElement('div');
+  mock.className = 'shot-mock';
+  mock.innerHTML = `<div class="shot-mock-icon">${icon}</div><div class="shot-mock-text">Capture manquante&nbsp;: ${esc(path)}</div>`;
+  (link || imgEl).replaceWith(mock);
+}
 
 function updateGauge() {
   gaugeCount.textContent = seen.size;
@@ -545,6 +604,17 @@ function closeSidebar() {
 }
 
 goToStep(0);
+</script>
+
+<script type="module">
+  import PhotoSwipeLightbox from 'https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js';
+
+  const lightbox = new PhotoSwipeLightbox({
+    gallery: '#panels',
+    children: 'a.pswp-shot',
+    pswpModule: () => import('https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.esm.min.js')
+  });
+  lightbox.init();
 </script>
 </body>
 </html>
